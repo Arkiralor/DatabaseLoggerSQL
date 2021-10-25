@@ -2,16 +2,16 @@
     "slack":
     {
         "app_name": "Slack",
-        "webhook" : "https://hooks.slack.com/services/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"
+        "webhook" : "Slack App Webhook URL"
     },
     "email":
     {
-        "app_name": "Google Mail",
-        "username": "fablelordarkalon11235",
-        "password": "umfmrwedvhaveqfk",
-        "mail_server": "smtp.gmail.com",
-        "server_port": "465",
-        "sender_email": "fablelordarkalon11235@gmail.com",
-        "recipient_email": "notif@yopmail.com"
+        "app_name": "Email Service Name",
+        "username": "<email username>",
+        "password": "<email password or app password>",
+        "mail_server": "<SMTP server URL>",
+        "server_port": "<SMTP server Port>",
+        "sender_email": "<Sender's Email ID>",
+        "recipient_email": "<Recipient's Email ID>"
     }
 }
