@@ -1,0 +1,17 @@
+{
+    "slack":
+    {
+        "app_name": "Slack",
+        "webhook" : "https://hooks.slack.com/services/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"
+    },
+    "email":
+    {
+        "app_name": "Google Mail",
+        "username": "fablelordarkalon11235",
+        "password": "umfmrwedvhaveqfk",
+        "mail_server": "smtp.gmail.com",
+        "server_port": "465",
+        "sender_email": "fablelordarkalon11235@gmail.com",
+        "recipient_email": "notif@yopmail.com"
+    }
+}
