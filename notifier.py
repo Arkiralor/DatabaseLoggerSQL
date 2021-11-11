@@ -5,6 +5,7 @@ import requests
 import multiprocessing
 import json
 
+
 import sys
 
 sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
@@ -40,8 +41,6 @@ class EventLogger():
 
         self.slack_notifier = SlackNotifier()
         self.email_notifier = EmailNotifier()
-
-        return True
 
     
     def push_to_table(self, msg:str, slack = False, email = False):
@@ -89,8 +88,9 @@ class SlackNotifier():
 
         response_data = response.text
 
+        print(response_data)
         return response_data
-        # print(response_data)
+        
 
     
 class EmailNotifier():
@@ -107,7 +107,7 @@ class EmailNotifier():
         
     
     def mail_notifier(self, msg:str):
-        #message = f"Notification from {self.app_name}: {msg}"
+        
         message = msg
 
         try:
@@ -119,12 +119,14 @@ class EmailNotifier():
                 message
             )
 
+            print({'email':True})
             return {'email':True}
         except Exception as e:
             print({'Error':f'{e}; Could not send email.'}) 
                 
             self.server.quit()
 
+            print({'email':False, 'error': str(e)})
             return {'email':False, 'error': str(e)}
 
 
