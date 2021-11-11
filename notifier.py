@@ -5,6 +5,10 @@ import requests
 import multiprocessing
 import json
 
+import sys
+
+sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
+
 with open ('CONFIG.json') as fp:
     config = json.load(fp)
 
@@ -37,6 +41,8 @@ class EventLogger():
         self.slack_notifier = SlackNotifier()
         self.email_notifier = EmailNotifier()
 
+        return True
+
     
     def push_to_table(self, msg:str, slack = False, email = False):
         
@@ -65,6 +71,8 @@ class EventLogger():
         cur.close()
         db.close()
 
+        return {'push_to_table': True}
+
 
 class SlackNotifier():
 
@@ -80,7 +88,9 @@ class SlackNotifier():
         response = requests.post(self.slack_url, json = payload)
 
         response_data = response.text
-        print(response_data)
+
+        return response_data
+        # print(response_data)
 
     
 class EmailNotifier():
@@ -108,10 +118,14 @@ class EmailNotifier():
                 config['email']['recipient_email'],
                 message
             )
+
+            return {'email':True}
         except Exception as e:
             print({'Error':f'{e}; Could not send email.'}) 
                 
             self.server.quit()
+
+            return {'email':False, 'error': str(e)}
 
 
 if __name__ == "__main__":
