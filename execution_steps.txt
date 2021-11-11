@@ -1,0 +1,4 @@
+Go to the root directory of the project, then pass these commands to the CLI:
+
+    1. "pytest --alluredir=reports unit_tests/test_01.py"
+    2. "allure serve reports"
