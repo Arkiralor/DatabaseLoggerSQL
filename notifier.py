@@ -6,17 +6,12 @@ import multiprocessing
 import json
 import os
 from dotenv import load_dotenv
-
-
-load_dotenv()
-
-
 import sys
 
 sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
 
-# with open ('CONFIG.json') as fp:
-#     config = json.load(fp)
+
+load_dotenv()
 
 
 class Events():
