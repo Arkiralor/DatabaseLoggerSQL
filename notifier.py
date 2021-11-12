@@ -4,14 +4,19 @@ import smtplib
 import requests
 import multiprocessing
 import json
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 import sys
 
 sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
 
-with open ('CONFIG.json') as fp:
-    config = json.load(fp)
+# with open ('CONFIG.json') as fp:
+#     config = json.load(fp)
 
 
 class Events():
@@ -76,8 +81,8 @@ class EventLogger():
 class SlackNotifier():
 
     def __init__(self):
-        self.slack_url = config["slack"]['webhook']
-        self.app_name = config["slack"]["app_name"]
+        self.slack_url = os.environ.get('webhook')
+        self.app_name = os.environ.get('slack_app_name')
             
     def notification(self, msg:str):
         
@@ -95,14 +100,14 @@ class SlackNotifier():
     
 class EmailNotifier():
     def __init__(self):
-        self.mail_server = config['email']['mail_server']
-        self.server_port = int(config['email']['server_port'])
+        self.mail_server = os.environ.get('mail_server')
+        self.server_port = int(os.environ.get('server_port'))
         
         self.server = smtplib.SMTP_SSL(self.mail_server, self.server_port)
         
-        self.serveruid = config['email']['username']
-        self.server_app_password = config['email']['password']
-        self.app_name = config['email']['app_name']
+        self.serveruid = os.environ.get('username')
+        self.server_app_password = os.environ.get('password')
+        self.app_name = os.environ.get('email_app_name')
 
         
     
@@ -114,8 +119,8 @@ class EmailNotifier():
             self.server.login(self.serveruid, self.server_app_password)
             
             self.server.sendmail(
-                config['email']['sender_email'],
-                config['email']['recipient_email'],
+                os.environ.get('sender_email'),
+                os.environ.get('recipient_email'),
                 message
             )
 

@@ -1,5 +1,7 @@
-from CONFIG import CONFIG
+from dotenv import load_dotenv
+import os
 
-response = CONFIG['test']
+load_dotenv()
 
-print(response)
+slack = os.environ.get('slack_app_name')
+print(slack)

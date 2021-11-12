@@ -25,7 +25,7 @@ class SlackTest(unittest.TestCase):
         slack_01 = SlackNotifier()
         passed_slack:str = slack_01.notification(msg)
 
-        self.assertTrue(passed_slack == msg)
+        self.assertTrue(passed_slack == 'ok')
 
 
 class EmailTest(unittest.TestCase):
