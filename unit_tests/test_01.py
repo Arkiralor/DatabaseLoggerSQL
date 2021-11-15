@@ -1,11 +1,16 @@
 import unittest
 import sys
+import pytest
+import allure
 
 sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
 from notifier import EventLogger, SlackNotifier, EmailNotifier
 
+
 class DatabaseTest(unittest.TestCase):
 
+    
+    
     def test_ptt(self):
         msg:str = 'this is from unit-test.'
         tablename:str = 'plain_table'
@@ -15,6 +20,42 @@ class DatabaseTest(unittest.TestCase):
 
         self.assertTrue(passed_test == {'push_to_table': True})
 
+
+    def test_ptt_slack(self):
+        msg:str = 'this is from unit-test with slack.'
+        tablename:str = 'plain_table_slack'
+        
+        event_01 = EventLogger(tablename)
+        passed_test:bool = event_01.push_to_table(msg, slack=True, email=False)
+
+        self.assertTrue(passed_test == {'push_to_table': True})
+
+    
+    def test_ptt_email(self):
+        msg:str = 'this is from unit-test with email.'
+        tablename:str = 'plain_table_email'
+        
+        event_01 = EventLogger(tablename)
+        passed_test:bool = event_01.push_to_table(msg, slack=False, email=True)
+
+        self.assertTrue(passed_test == {'push_to_table': True})
+
+
+    def test_ptt_slack_and_email(self):
+        msg:str = 'this is from unit-test with slack and email.'
+        tablename:str = 'plain_table_slack_email'
+        
+        event_01 = EventLogger(tablename)
+        passed_test:bool = event_01.push_to_table(msg, slack=True, email=True)
+
+        self.assertTrue(passed_test == {'push_to_table': True})
+
+    #This is meant to fail:
+    def test_tablename(self):
+        tablename:str = 'entered_table'
+        event_01 = EventLogger(tablename)
+
+        self.assertTrue(event_01.TABLE_NAME != tablename)
 
 
 class SlackTest(unittest.TestCase):
@@ -41,4 +82,5 @@ class EmailTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
+
     unittest.main()
