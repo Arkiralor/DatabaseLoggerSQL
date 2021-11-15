@@ -119,6 +119,8 @@ class EmailNotifier():
                 message
             )
 
+            self.server.quit()
+
             print({'email':True})
             return {'email':True}
         except Exception as e:
