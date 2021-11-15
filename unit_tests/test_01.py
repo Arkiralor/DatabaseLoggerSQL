@@ -10,7 +10,7 @@ from notifier import EventLogger, SlackNotifier, EmailNotifier
 class DatabaseTest(unittest.TestCase):
 
     
-    
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_ptt(self):
         msg:str = 'this is from unit-test.'
         tablename:str = 'plain_table'
@@ -21,6 +21,7 @@ class DatabaseTest(unittest.TestCase):
         self.assertTrue(passed_test == {'push_to_table': True})
 
 
+    @allure.severity(allure.severity_level.NORMAL)
     def test_ptt_slack(self):
         msg:str = 'this is from unit-test with slack.'
         tablename:str = 'plain_table_slack'
@@ -31,6 +32,7 @@ class DatabaseTest(unittest.TestCase):
         self.assertTrue(passed_test == {'push_to_table': True})
 
     
+    @allure.severity(allure.severity_level.NORMAL)
     def test_ptt_email(self):
         msg:str = 'this is from unit-test with email.'
         tablename:str = 'plain_table_email'
@@ -41,6 +43,7 @@ class DatabaseTest(unittest.TestCase):
         self.assertTrue(passed_test == {'push_to_table': True})
 
 
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_ptt_slack_and_email(self):
         msg:str = 'this is from unit-test with slack and email.'
         tablename:str = 'plain_table_slack_email'
@@ -51,15 +54,17 @@ class DatabaseTest(unittest.TestCase):
         self.assertTrue(passed_test == {'push_to_table': True})
 
     #This is meant to fail:
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_tablename(self):
         tablename:str = 'entered_table'
         event_01 = EventLogger(tablename)
 
-        self.assertTrue(event_01.TABLE_NAME != tablename)
+        self.assertRegex(event_01.TABLE_NAME, 'random_table')
 
 
 class SlackTest(unittest.TestCase):
     
+    @allure.severity(allure.severity_level.MINOR)
     def test_slack_notif(self):
         msg:str = 'this is from slack-test.'
         
@@ -72,6 +77,7 @@ class SlackTest(unittest.TestCase):
 class EmailTest(unittest.TestCase):
 
 
+    @allure.severity(allure.severity_level.MINOR)
     def test_email(self):
         msg:str = 'this is from email-test.'
         
