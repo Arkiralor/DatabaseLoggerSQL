@@ -57,23 +57,26 @@ class EventLogger():
         cur.execute(insert_query)
 
         if slack == True:
-            slack_process = multiprocessing.Process(
-                target=self.slack_notifier.notification, args=(msg, ))
-            slack_process.start()
+            # slack_process = multiprocessing.Process(
+            #     target=self.slack_notifier.notification, args=(msg, ))
+            # slack_process.start()
+            self.slack_notifier.notification(msg)
 
         if email == True:
             try:
-                email_process = multiprocessing.Process(
-                    target=self.email_notifier.mail_notifier, args=(msg, ))
-                email_process.start()
+                # email_process = multiprocessing.Process(
+                #     target=self.email_notifier.mail_notifier, args=(msg, ))
+                # email_process.start()
+                self.email_notifier.mail_notifier(msg)
             except Exception as er:
                 print(er)
 
         if hw_monitor == True:
             try:
-                hw_process = multiprocessing.Process(
-                    target=self.monitor.monitor, args=(msg,))
-                hw_process.start()
+                # hw_process = multiprocessing.Process(
+                #     target=self.monitor.monitor, args=(msg,))
+                # hw_process.start()
+                self.monitor.monitor(msg)
             except Exception as er:
                 print(er)
 
@@ -130,15 +133,15 @@ class EmailNotifier():
 
             self.server.quit()
 
-            print({'email': True})
-            return {'email': True}
+            # print({'email': True})
+            # return {'email': True}
         except Exception as e:
             print({'Error': f'{e}; Could not send email.'})
 
             self.server.quit()
 
-            print({'email': False, 'error': str(e)})
-            return {'email': False, 'error': str(e)}
+            # print({'email': False, 'error': str(e)})
+            # return {'email': False, 'error': str(e)}
 
 
 class Monitor():
@@ -152,7 +155,7 @@ class Monitor():
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
 
-        create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, msg VARCHAR(255), date DATETIME)'
+        create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, task VARCHAR(1024), date DATETIME)'
 
         cur.execute(create_query)
 
@@ -161,20 +164,20 @@ class Monitor():
         Method to write hardware logs to db:
         '''
         cpu, cpu_perc = ps.cpu_freq(), ps.cpu_percent()
-        mem, vir_mem = ps.virtual_memory(), ps.swap_memory()
+        mem, swap_mem = ps.virtual_memory(), ps.swap_memory()
 
         log_dict = {
             "Task": msg,
             "CPU Frequency": str(cpu),
             "CPU Usage": str(cpu_perc),
             "Memory Usage": str(mem),
-            "Swap File": str(vir_mem)
+            "Swap File": str(swap_mem)
         }
 
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
 
-        insert_query = f"INSERT INTO {self.TABLE_NAME} (msg, date) VALUES ('{json.dumps(log_dict)}', '{dt.datetime.now()}')"
+        insert_query = f"INSERT INTO {self.TABLE_NAME} (task, date) VALUES ('{json.dumps(log_dict)}', '{dt.datetime.now()}')"
 
         cur.execute(insert_query)
 
@@ -185,4 +188,4 @@ if __name__ == "__main__":
     e1.push_to_table('New new second mail!', slack=True, email=True)
 
     e2 = EventLogger('new_old_table')
-    e2.push_to_table('Hello World.', slack=True, hw_monitor=True )
+    e2.push_to_table('Hello World.', slack=True, email=False, hw_monitor=True )
