@@ -171,11 +171,11 @@ class Monitor():
         mem, swap_mem = ps.virtual_memory(), ps.swap_memory()
 
         log_dict = {
-            "Task": msg,
-            "CPU Frequency": str(cpu),
-            "CPU Usage": str(cpu_perc),
-            "Memory Usage": str(mem),
-            "Swap File": str(swap_mem)
+            "task": msg,
+            "cpu_frequency": str(cpu.current),
+            "cpu_usage_percentage": cpu_perc,
+            "virtual_memory_percentage": mem.percent,
+            "swap_memory_used": swap_mem.used
         }
 
         try:
@@ -192,8 +192,8 @@ class Monitor():
 
 
 if __name__ == "__main__":
-    e1 = EventLogger('new_new_table')
-    e1.push_to_table('New new second mail!', slack=True, email=True)
+    # e1 = EventLogger('new_new_table')
+    # e1.push_to_table('New new second mail!', slack=True, email=True)
 
     e2 = EventLogger('new_old_table')
-    e2.push_to_table('Hello World.', slack=True, email=False, hw_monitor=True)
+    e2.push_to_table('Hello World.', slack=False, email=False, hw_monitor=True)
