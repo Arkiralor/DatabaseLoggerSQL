@@ -40,12 +40,16 @@ class EventLogger():
         create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, msg VARCHAR(255), date DATETIME)'
 
         cur.execute(create_query)
+        db.commit()
+
+        cur.close()
+        db.close()
 
         self.slack_notifier = SlackNotifier()
         self.email_notifier = EmailNotifier()
         self.monitor = Monitor('hw_logs')
 
-    def push_to_table(self, msg: str, slack=False, email= False, hw_monitor = False):
+    def push_to_table(self, msg: str, slack=False, email=False, hw_monitor=False):
 
         event = Events(msg)
 
@@ -55,6 +59,11 @@ class EventLogger():
         insert_query = f"INSERT INTO {self.TABLE_NAME} (msg, date) VALUES ('{event.message}', '{event.datetime}')"
 
         cur.execute(insert_query)
+
+        db.commit()
+
+        cur.close()
+        db.close()
 
         if slack == True:
             # slack_process = multiprocessing.Process(
@@ -80,11 +89,6 @@ class EventLogger():
             except Exception as er:
                 print(er)
 
-        db.commit()
-
-        cur.close()
-        db.close()
-
         return {'push_to_table': True}
 
 
@@ -96,7 +100,7 @@ class SlackNotifier():
 
     def notification(self, msg: str):
 
-        message = f"Notification from {self.app_name}: {msg}"
+        message = f"{self.app_name}: {msg}"
 
         payload = {"text": message}
         response = requests.post(self.slack_url, json=payload)
@@ -104,7 +108,7 @@ class SlackNotifier():
         response_data = response.text
 
         print(response_data)
-        return response_data
+        # return response_data
 
 
 class EmailNotifier():
@@ -155,7 +159,7 @@ class Monitor():
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
 
-        create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, task VARCHAR(1024), date DATETIME)'
+        create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, task VARCHAR, date DATETIME)'
 
         cur.execute(create_query)
 
@@ -174,12 +178,17 @@ class Monitor():
             "Swap File": str(swap_mem)
         }
 
-        db = sqlite3.connect("LOGS.db")
-        cur = db.cursor()
+        try:
+            db = sqlite3.connect("LOGS.db")
+            cur = db.cursor()
 
-        insert_query = f"INSERT INTO {self.TABLE_NAME} (task, date) VALUES ('{json.dumps(log_dict)}', '{dt.datetime.now()}')"
+            insert_query = f"INSERT INTO {self.TABLE_NAME} (task, date) VALUES ('{json.dumps(log_dict)}', '{dt.datetime.now()}')"
 
-        cur.execute(insert_query)
+            cur.execute(insert_query)
+            db.commit()
+            db.close()
+        except Exception as err:
+            print(f'Error: {str(err)}')
 
 
 
