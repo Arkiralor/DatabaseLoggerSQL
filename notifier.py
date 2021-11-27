@@ -221,4 +221,4 @@ if __name__ == "__main__":
     try:
         print(3/0)
     except Exception as err:
-        e2.push_to_table(f'Error: {err}', slack=False, email=False, hw_monitor=True)
+        e2.push_to_table(f'Error: {err}', slack=True, email=False, hw_monitor=True)
