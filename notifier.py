@@ -179,7 +179,7 @@ class Monitor():
             conf_file.write(json.dumps(log_dict))
             conf_file.write("\n")
 
-    def monitor(self, msg: str, process_id: int, date: dt.datetime):
+    def monitor(self, msg: str, process_id: int = os.getpid(), date: dt.datetime = dt.datetime.now()):
         '''
         Method to write hardware logs to db:
         '''
