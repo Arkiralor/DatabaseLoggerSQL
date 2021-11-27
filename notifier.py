@@ -47,7 +47,7 @@ class EventLogger():
 
         self.slack_notifier = SlackNotifier()
         self.email_notifier = EmailNotifier()
-        self.monitor = Monitor('hw_logs')
+        self.monitor = Monitor()
 
     def push_to_table(self, msg: str, slack=False, email=False, hw_monitor=False):
 
@@ -85,7 +85,7 @@ class EventLogger():
                 # hw_process = multiprocessing.Process(
                 #     target=self.monitor.monitor, args=(msg,))
                 # hw_process.start()
-                self.monitor.monitor(msg)
+                self.monitor.monitor(msg, date=event.datetime)
             except Exception as er:
                 print(er)
 
@@ -152,40 +152,62 @@ class Monitor():
     '''
     Class for all monitoring activities:
     '''
-    TABLE_NAME: path = None
+    TABLE_NAME: str = 'hw_logs'
 
-    def __init__(self, table_name):
-        self.TABLE_NAME = table_name
+    def __init__(self):
+        # self.TABLE_NAME = table_name
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
 
-        create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, task VARCHAR, date DATETIME)'
+        create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, task VARCHAR, pid INTEGER, cpu_times VARCHAR, cpu_usage VARCHAR, memory VARCHAR, mem_use VARCHAR, read_count INTEGER, write_count INTEGER, date DATETIME)'
 
         cur.execute(create_query)
 
-    def monitor(self, msg: str):
-        '''
-        Method to write hardware logs to db:
-        '''
         cpu, cpu_perc = ps.cpu_freq(), ps.cpu_percent()
         mem, swap_mem = ps.virtual_memory(), ps.swap_memory()
 
         log_dict = {
-            "task": msg,
-            "cpu_frequency": str(cpu.current),
+            "cpu_frequency": cpu,
             "cpu_usage_percentage": cpu_perc,
-            "virtual_memory_percentage": mem.percent,
-            "swap_memory_used": swap_mem.used
+            "virtual_memory_percentage": mem,
+            "swap_memory_used": swap_mem
         }
 
+        with open('config/config.json', 'wt')as conf_file:
+            conf_file.write(json.dumps(log_dict))
+            conf_file.write("\n")
+
+    def monitor(self, msg: str, date: dt.datetime):
+        '''
+        Method to write hardware logs to db:
+        '''
         try:
+            targ = ps.Process(os.getpid())
+
+            targ_pid = targ.pid
+            targ_cpu_times = targ.cpu_times().user + targ.cpu_times().system
+            targ_cpu_usage = targ.cpu_percent()
+            targ_mem = targ.memory_info().rss
+            targ_mem_use = targ.memory_percent()
+            targ_read_count = targ.io_counters().read_count
+            targ_write_count = targ.io_counters().write_count
+
+            # print(targ_pid)
+            # print(targ_cpu_times)
+            # print(targ_cpu_usage)
+            # print(targ_mem)
+            # print(targ_mem_use)
+            # print(targ_read_count)
+            # print(targ_write_count)
+            
             db = sqlite3.connect("LOGS.db")
             cur = db.cursor()
 
-            insert_query = f"INSERT INTO {self.TABLE_NAME} (task, date) VALUES ('{json.dumps(log_dict)}', '{dt.datetime.now()}')"
+            insert_query = f"INSERT INTO {self.TABLE_NAME} (task, pid , cpu_times , cpu_usage , memory , mem_use , read_count , write_count , date) VALUES ('{msg}', '{targ_pid}', '{targ_cpu_times}', '{targ_cpu_usage}', '{targ_mem}', '{targ_mem_use}', '{targ_read_count}', '{targ_write_count}', '{date}' )"
 
             cur.execute(insert_query)
             db.commit()
+            cur.close()
             db.close()
         except Exception as err:
             print(f'Error: {str(err)}')
@@ -195,5 +217,8 @@ if __name__ == "__main__":
     # e1 = EventLogger('new_new_table')
     # e1.push_to_table('New new second mail!', slack=True, email=True)
 
-    e2 = EventLogger('new_old_table')
-    e2.push_to_table('Hello World.', slack=False, email=False, hw_monitor=True)
+    e2 = EventLogger('error_table')
+    try:
+        print(3/0)
+    except Exception as err:
+        e2.push_to_table(f'Error: {err}', slack=False, email=False, hw_monitor=True)
