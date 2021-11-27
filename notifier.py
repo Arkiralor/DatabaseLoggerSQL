@@ -18,11 +18,13 @@ load_dotenv()
 
 class Events():
     event_id = None
-    message = None
-    datetime = None
+    message: str = None
+    process_id: int = None
+    datetime:dt.datetime = None
 
-    def __init__(self, message: str):
+    def __init__(self, message: str, process_id: int):
         self.message = message
+        self.process_id = process_id
         self.datetime = dt.datetime.now()
 
     def __repr__(self):
@@ -51,7 +53,7 @@ class EventLogger():
 
     def push_to_table(self, msg: str, slack=False, email=False, hw_monitor=False):
 
-        event = Events(msg)
+        event = Events(msg, process_id=os.getpid())
 
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
@@ -85,7 +87,7 @@ class EventLogger():
                 # hw_process = multiprocessing.Process(
                 #     target=self.monitor.monitor, args=(msg,))
                 # hw_process.start()
-                self.monitor.monitor(msg, date=event.datetime)
+                self.monitor.monitor(msg, process_id = event.process_id, date=event.datetime)
             except Exception as er:
                 print(er)
 
@@ -177,12 +179,12 @@ class Monitor():
             conf_file.write(json.dumps(log_dict))
             conf_file.write("\n")
 
-    def monitor(self, msg: str, date: dt.datetime):
+    def monitor(self, msg: str, process_id: int, date: dt.datetime):
         '''
         Method to write hardware logs to db:
         '''
         try:
-            targ = ps.Process(os.getpid())
+            targ = ps.Process(process_id)
 
             targ_pid = targ.pid
             targ_cpu_times = targ.cpu_times().user + targ.cpu_times().system
