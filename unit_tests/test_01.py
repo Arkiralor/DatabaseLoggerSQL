@@ -4,7 +4,7 @@ import pytest
 import allure
 
 sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
-from notifier import EventLogger, SlackNotifier, EmailNotifier
+from notifier import EventLogger, SlackNotifier, EmailNotifier, Monitor
 
 
 class DatabaseTest(unittest.TestCase):
@@ -50,6 +50,16 @@ class DatabaseTest(unittest.TestCase):
         
         event_01 = EventLogger(tablename)
         passed_test:bool = event_01.push_to_table(msg, slack=True, email=True)
+
+        self.assertTrue(passed_test == {'push_to_table': True})
+
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_ptt_hwlogs(self):
+        msg:str = 'this is from unit-test with hardware logs.'
+        tablename:str = 'hw_log_test'
+        
+        event_01 = EventLogger(tablename)
+        passed_test:bool = event_01.push_to_table(msg, slack=False, email=False, hw_monitor=True)
 
         self.assertTrue(passed_test == {'push_to_table': True})
 

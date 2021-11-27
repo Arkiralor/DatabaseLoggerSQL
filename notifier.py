@@ -17,16 +17,16 @@ load_dotenv()
 
 
 class Events():
-            event_id = None
-            message = None
-            datetime = None
+    event_id = None
+    message = None
+    datetime = None
 
-            def __init__(self, message: str):
-                self.message = message
-                self.datetime = dt.datetime.now()
+    def __init__(self, message: str):
+        self.message = message
+        self.datetime = dt.datetime.now()
 
-            def __repr__(self):
-                return "<Event('%s','%s')>" % (self.message, self.datetime)
+    def __repr__(self):
+        return "<Event('%s','%s')>" % (self.message, self.datetime)
 
 
 class EventLogger():
@@ -191,10 +191,9 @@ class Monitor():
             print(f'Error: {str(err)}')
 
 
-
 if __name__ == "__main__":
     e1 = EventLogger('new_new_table')
     e1.push_to_table('New new second mail!', slack=True, email=True)
 
     e2 = EventLogger('new_old_table')
-    e2.push_to_table('Hello World.', slack=True, email=False, hw_monitor=True )
+    e2.push_to_table('Hello World.', slack=True, email=False, hw_monitor=True)
