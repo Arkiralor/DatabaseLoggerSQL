@@ -6,6 +6,25 @@ a textual description (user-defined) of the state to a database called 'LOGS.db'
 sqlite database (*.db) file.
 </p>
 
+### How to use:
+<p>
+Simply define an event and call the event's 'push_to_table' method in case of eny exceptions occuring at runtime.
+</p>
+
+#### Example of Usage:
+
+From [Example.PY](https://github.com/Arkiralor/DatabaseLoggerSQL/blob/main/example.py) in repository:
+
+
+            '''
+            Let's try to devide by zero.
+            '''
+            event = EventLogger('error_table')
+            try:
+                print(3/0)
+            except Exception as err:
+                event.push_to_table(f'Error: {err}', slack=True, email=False, hw_monitor=True)
+
 ### Classes:
 <p>
 A brief description of all the classes declared and defined in the package:
@@ -50,3 +69,8 @@ A brief decription of the methods that can be called by the package:
     
     <p>
     The method called when 'hw_monitor' is set to 'True' in method#1 above. It passes the 'msg' string, the malfunctioning module's current process id and the malfunctioning module's timestamp to a data-set and concatenates it with the malfunctioning module's CPU and Memory consumption snapshot and saves the data to the 'hw_logs' table in the concerned database. </p>
+
+### Contributors:
+
+1. [Prithoo Medhi](https://github.com/Prithoo-Medhi) & [Arkiralor](https://github.com/Arkiralor)
+2. [Sivaranjan Goswami](https://github.com/sivgos)
