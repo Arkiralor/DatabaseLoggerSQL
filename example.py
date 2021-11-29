@@ -1,11 +1,11 @@
+from sqlite3.dbapi2 import Date
 from logger import EventLogger
+import datetime
 
 if __name__ == "__main__":
-    # e1 = EventLogger('Example_Table_01')
-    # e1.push_to_table('New new second mail!', slack = True, email = True)
-
-    e2 = EventLogger('error_table')
+    e2 = EventLogger(table_name='error_table')
     try:
         print(3/0)
     except Exception as err:
-        e2.push_to_table(f'Error: {err}', slack=True, email=False, hw_monitor=True)
+        e2.push_to_table(f'Error: {err} at {datetime.datetime.now()}', hw_monitor=True)
+        # raise Exception(err)

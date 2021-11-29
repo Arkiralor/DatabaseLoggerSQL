@@ -44,7 +44,7 @@ class Monitor():
             conf_file.write(json.dumps(log_dict))
             conf_file.write("\n")
 
-    def monitor(self, msg: str, process_id: int = os.getpid(), date: dt.datetime = dt.datetime.now()):
+    def monitor(self, msg:str = 'Default hw_logger error', process_id: int = os.getpid(), date: dt.datetime = dt.datetime.now()):
         '''
         Method to write hardware logs to db:
         '''
@@ -77,4 +77,4 @@ class Monitor():
             cur.close()
             db.close()
         except Exception as err:
-            print(f'Error: {str(err)}')
+            print(f'Error in hw_monitor(): {err}')

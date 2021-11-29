@@ -71,13 +71,15 @@ class EventLogger():
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
 
-        create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, msg VARCHAR(255), date DATETIME)'
+        try:
+            create_query = f'CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (id INTEGER PRIMARY KEY AUTOINCREMENT, msg VARCHAR, date DATETIME)'
+            cur.execute(create_query)
+            db.commit()
 
-        cur.execute(create_query)
-        db.commit()
-
-        cur.close()
-        db.close()
+            cur.close()
+            db.close()
+        except Exception as err:
+            print(f'Error in Log_init: {err}')
 
         self.slack_notifier = SlackNotifier()
         self.email_notifier = EmailNotifier()
@@ -92,20 +94,31 @@ class EventLogger():
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
 
-        insert_query = f"INSERT INTO {self.TABLE_NAME} (msg, date) VALUES ('{event.message}', '{event.datetime}')"
+        try:
+            insert_query = f"INSERT INTO {self.TABLE_NAME} (msg, date) VALUES ('{event.message}', '{event.datetime}')"
+            cur.execute(insert_query)
+            db.commit()
 
-        cur.execute(insert_query)
+            cur.close()
+            db.close()
+        except Exception as err:
+            # print(f'Error: {err}')
+            event.message = err
+            insert_query = f"INSERT INTO {self.TABLE_NAME} (msg, date) VALUES ('LOGGER Error: {event.message}', '{event.datetime}')"
+            cur.execute(insert_query)
+            db.commit()
 
-        db.commit()
-
-        cur.close()
-        db.close()
+            cur.close()
+            db.close()
 
         if slack == True:
-            slack_process = multiprocessing.Process(
-                target=self.slack_notifier.notification, args=(msg, ))
-            slack_process.start()
-            # self.slack_notifier.notification(msg)
+            try:
+                slack_process = multiprocessing.Process(
+                    target=self.slack_notifier.notification, args=(msg, ))
+                slack_process.start()
+                # self.slack_notifier.notification(msg)
+            except Exception as er:
+                print(f'Error in slack_notifier(): {er}')
 
         if email == True:
             try:
@@ -114,7 +127,7 @@ class EventLogger():
                 email_process.start()
                 # self.email_notifier.mail_notifier(msg)
             except Exception as er:
-                print(er)
+                print(f'Error in email_notifier(): {er}')
 
         if hw_monitor == True:
             try:
@@ -124,7 +137,7 @@ class EventLogger():
                 # self.monitor.monitor(
                 #     msg, process_id=event.process_id, date=event.datetime)
             except Exception as er:
-                print(er)
+                print(f'Error in hw_monitor(): {er}')
 
         return {'push_to_table': True}
 
