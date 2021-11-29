@@ -27,7 +27,7 @@ From [Example.PY](https://github.com/Arkiralor/DatabaseLoggerSQL/blob/main/examp
 
 #### .env File Example:
 
-        webhook = <incoming webhook url of your lsack app> 
+        webhook = <incoming webhook url of your Slack app> 
         slack_app_name = <name you want to appear in the Slack message>
         mail_server = <sender's email server address>
         server_port = <sender's email server port>
