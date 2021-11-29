@@ -35,7 +35,7 @@ load_dotenv()
 
 class Events():
     '''
-    Class to contain event specific data of that needs to be commited to the database:
+    Class to contain event specific data of what needs to be commited to the database:
     '''
     event_id = None
     message: str = None
