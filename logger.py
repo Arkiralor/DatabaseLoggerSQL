@@ -27,7 +27,7 @@ Unused imports:
 # from os import path
 
 
-sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
+# sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
 
 
 load_dotenv()
