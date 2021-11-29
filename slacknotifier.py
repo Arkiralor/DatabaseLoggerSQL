@@ -18,7 +18,7 @@ class SlackNotifier():
         payload = {"text": message}
         response = requests.post(self.slack_url, json=payload)
 
-        response_data = response.text
+        # response_data = response.text
 
-        # print(response_data)
-        # return response_data
+        # print(response.text)
+        # return response

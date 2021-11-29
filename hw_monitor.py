@@ -14,8 +14,8 @@ class Monitor():
     '''
     TABLE_NAME: str = 'hw_logs'
 
-    def __init__(self):
-        # self.TABLE_NAME = table_name
+    def __init__(self, table_name: str = 'hw_logs'):
+        self.TABLE_NAME = table_name
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
 
