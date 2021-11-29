@@ -1,5 +1,5 @@
-py.test --alluredir=reports unit_tests/test_01.py -v
-python unit_tests/allure_config.py
+pytest --alluredir=../reports test_01.py -v
+python allure_config.py
 allure serve reports
 # PID=$!
 # sleep 5
