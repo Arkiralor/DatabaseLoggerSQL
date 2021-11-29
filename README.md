@@ -27,7 +27,6 @@ From [Example.PY](https://github.com/Arkiralor/DatabaseLoggerSQL/blob/main/examp
 
 #### .env File Example:
 
-    ```
         webhook = <incoming webhook url of your lsack app> 
         slack_app_name = <name you want to appear in the Slack message>
         mail_server = <sender's email server address>
@@ -37,7 +36,6 @@ From [Example.PY](https://github.com/Arkiralor/DatabaseLoggerSQL/blob/main/examp
         email_app_name = <name you want to appear in your email notification>
         sender_email = <should be obvious, but is the sender's email address>
         recipient_email = <should be obvious, but is the recipient's email address>
-    ```
 
 ### Classes:
 <p>
