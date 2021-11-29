@@ -17,7 +17,7 @@ From [Example.PY](https://github.com/Arkiralor/DatabaseLoggerSQL/blob/main/examp
 
 
             '''
-            Let's try to devide by zero.
+            Let's try to divide by zero.
             '''
             event = EventLogger('error_table')
             try:
