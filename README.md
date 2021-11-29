@@ -58,6 +58,8 @@ A brief description of all the classes declared and defined in the package:
     
     A class to initialize the HW-Monitor and to store system HW snapshots in a DICT format to the db whenever called to do so.
 
+    Saves HW-info of the system (CPU, Memory) on intialization to [config/config.json](https://github.com/Arkiralor/DatabaseLoggerSQL/blob/main/config/config.json).
+
 ### Methods:
 <p>
 A brief decription of the methods that can be called by the package:
