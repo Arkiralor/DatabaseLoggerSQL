@@ -1,10 +1,9 @@
 import os
 import requests
-
 from dotenv import load_dotenv
-import sys
 
 load_dotenv()
+
 
 class SlackNotifier():
 
@@ -21,5 +20,5 @@ class SlackNotifier():
 
         response_data = response.text
 
-        print(response_data)
+        # print(response_data)
         # return response_data

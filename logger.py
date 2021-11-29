@@ -1,17 +1,23 @@
 import datetime as dt
 import sqlite3
-# import smtplib
-# import requests
-# import multiprocessing
-# import psutil as ps
 from hw_monitor import Monitor
 from slacknotifier import SlackNotifier
 from emailnotifier import EmailNotifier
-# import json
+import multiprocessing
 import os
-# from os import path
 from dotenv import load_dotenv
 import sys
+
+'''
+Unused imports:
+'''
+# import smtplib
+# import requests
+
+# import psutil as ps
+# import json
+# from os import path
+
 
 sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
 
@@ -23,7 +29,7 @@ class Events():
     event_id = None
     message: str = None
     process_id: int = None
-    datetime:dt.datetime = None
+    datetime: dt.datetime = None
 
     def __init__(self, message: str, process_id: int):
         self.message = message
@@ -71,26 +77,27 @@ class EventLogger():
         db.close()
 
         if slack == True:
-            # slack_process = multiprocessing.Process(
-            #     target=self.slack_notifier.notification, args=(msg, ))
-            # slack_process.start()
-            self.slack_notifier.notification(msg)
+            slack_process = multiprocessing.Process(
+                target=self.slack_notifier.notification, args=(msg, ))
+            slack_process.start()
+            # self.slack_notifier.notification(msg)
 
         if email == True:
             try:
-                # email_process = multiprocessing.Process(
-                #     target=self.email_notifier.mail_notifier, args=(msg, ))
-                # email_process.start()
-                self.email_notifier.mail_notifier(msg)
+                email_process = multiprocessing.Process(
+                    target=self.email_notifier.mail_notifier, args=(msg, ))
+                email_process.start()
+                # self.email_notifier.mail_notifier(msg)
             except Exception as er:
                 print(er)
 
         if hw_monitor == True:
             try:
-                # hw_process = multiprocessing.Process(
-                #     target=self.monitor.monitor, args=(msg,))
-                # hw_process.start()
-                self.monitor.monitor(msg, process_id = event.process_id, date=event.datetime)
+                hw_process = multiprocessing.Process(
+                    target=self.monitor.monitor, args=(msg, event.process_id, event.datetime))
+                hw_process.start()
+                # self.monitor.monitor(
+                #     msg, process_id=event.process_id, date=event.datetime)
             except Exception as er:
                 print(er)
 
@@ -204,7 +211,7 @@ class EventLogger():
 #             # print(targ_mem_use)
 #             # print(targ_read_count)
 #             # print(targ_write_count)
-            
+
 #             db = sqlite3.connect("LOGS.db")
 #             cur = db.cursor()
 
@@ -226,4 +233,5 @@ if __name__ == "__main__":
     try:
         print(3/0)
     except Exception as err:
-        e2.push_to_table(f'Error: {err}', slack=True, email=False, hw_monitor=True)
+        e2.push_to_table(f'Error: {err}', slack=True,
+                         email=False, hw_monitor=True)

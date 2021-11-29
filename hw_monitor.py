@@ -7,6 +7,7 @@ import os
 
 load_dotenv()
 
+
 class Monitor():
     '''
     Class for all monitoring activities:
@@ -58,7 +59,7 @@ class Monitor():
             # print(targ_mem_use)
             # print(targ_read_count)
             # print(targ_write_count)
-            
+
             db = sqlite3.connect("LOGS.db")
             cur = db.cursor()
 
