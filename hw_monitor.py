@@ -1,3 +1,7 @@
+'''
+This module deals with the Hardware Monitoring abilities of the ibrary.
+'''
+
 import sqlite3
 import psutil as ps
 import json
@@ -15,6 +19,9 @@ class Monitor():
     TABLE_NAME: str = 'hw_logs'
 
     def __init__(self, table_name: str = 'hw_logs'):
+        '''
+        Method to initialize hardware monitoring methods:
+        '''
         self.TABLE_NAME = table_name
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()

@@ -1,3 +1,6 @@
+'''
+This module deals with the email notification abilities of the library.
+'''
 import os
 import smtplib
 from dotenv import load_dotenv
@@ -6,7 +9,14 @@ load_dotenv()
 
 
 class EmailNotifier():
+    '''
+    Class to contain methods and data to send notifications via email:
+    '''
+    
     def __init__(self):
+        '''
+        Method to initialize email services:
+        '''
         self.mail_server = os.environ.get('mail_server')
         self.server_port = int(os.environ.get('server_port'))
 
@@ -17,7 +27,9 @@ class EmailNotifier():
         self.app_name = os.environ.get('email_app_name')
 
     def mail_notifier(self, msg: str):
-
+        '''
+        Method to send a notification via email:
+        '''
         message = msg
 
         try:

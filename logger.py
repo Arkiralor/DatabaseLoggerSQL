@@ -1,3 +1,11 @@
+'''
+This is the main module of the library and deals with the events and the logging of events and
+the event's data to the database.
+
+This module also calls all the other modules/classes present in the library.
+
+Therefore only this module needs to be imported from this library for the code to work.
+'''
 import datetime as dt
 import sqlite3
 from hw_monitor import Monitor
@@ -26,24 +34,39 @@ load_dotenv()
 
 
 class Events():
+    '''
+    Class to contain event specific data of that needs to be commited to the database:
+    '''
     event_id = None
     message: str = None
     process_id: int = None
     datetime: dt.datetime = None
 
     def __init__(self, message: str, process_id: int):
+        '''
+        Method to store event-specific data to the class-variables:
+        '''
         self.message = message
         self.process_id = process_id
         self.datetime = dt.datetime.now()
 
     def __repr__(self):
-        return "<Event('%s','%s')>" % (self.message, self.datetime)
+        '''
+        Representation method to print the class-variables, in case of requirement:
+        '''
+        return "<Event('%s','%s','%s')>" % (self.message, self.process_id, self.datetime)
 
 
 class EventLogger():
+    '''
+    Class to contain methods and data relating to what needs to be logged (committed) to the database:
+    '''
     TABLE_NAME = None
 
     def __init__(self, table_name):
+        '''
+        Method o initialize the class along with the required table in the database:
+        '''
         self.TABLE_NAME = table_name
         db = sqlite3.connect("LOGS.db")
         cur = db.cursor()
@@ -61,7 +84,9 @@ class EventLogger():
         self.monitor = Monitor()
 
     def push_to_table(self, msg: str, slack=False, email=False, hw_monitor=False):
-
+        '''
+        Method to push and commit the event-specific data to the database:
+        '''
         event = Events(msg, process_id=os.getpid())
 
         db = sqlite3.connect("LOGS.db")
