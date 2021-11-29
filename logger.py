@@ -54,7 +54,7 @@ class Events():
         '''
         Representation method to print the class-variables, in case of requirement:
         '''
-        return "<Event('%s','%s','%s')>" % (self.message, self.process_id, self.datetime)
+        return "<Event(Message: '%s', Process_ID: '%s', Date of Creation: '%s')>" % (self.message, self.process_id, self.datetime)
 
 
 class EventLogger():
