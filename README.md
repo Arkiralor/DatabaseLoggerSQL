@@ -25,6 +25,20 @@ From [Example.PY](https://github.com/Arkiralor/DatabaseLoggerSQL/blob/main/examp
             except Exception as err:
                 event.push_to_table(f'Error: {err}', slack=True, email=False, hw_monitor=True)
 
+#### .env File Example:
+
+    ```
+        webhook = <incoming webhook url of your lsack app> 
+        slack_app_name = <name you want to appear in the Slack message>
+        mail_server = <sender's email server address>
+        server_port = <sender's email server port>
+        username = <sender's email account username>
+        password = <sender's email account password or app-password (gmail-specific)>
+        email_app_name = <name you want to appear in your email notification>
+        sender_email = <should be obvious, but is the sender's email address>
+        recipient_email = <should be obvious, but is the recipient's email address>
+    ```
+
 ### Classes:
 <p>
 A brief description of all the classes declared and defined in the package:
