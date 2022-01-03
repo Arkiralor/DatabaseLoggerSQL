@@ -8,9 +8,9 @@ Therefore only this module needs to be imported from this library for the code t
 '''
 import datetime as dt
 import sqlite3
-from hw_monitor import Monitor
-from slacknotifier import SlackNotifier
-from emailnotifier import EmailNotifier
+from .hw_monitor import Monitor
+from .slacknotifier import SlackNotifier
+from .emailnotifier import EmailNotifier
 import multiprocessing
 import os
 from dotenv import load_dotenv
