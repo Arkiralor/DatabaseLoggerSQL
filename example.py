@@ -7,5 +7,4 @@ if __name__ == "__main__":
     try:
         print(3/0)
     except Exception as err:
-        e2.push_to_table(f'Error: {err} at {datetime.datetime.now()}', hw_monitor=True)
-        # raise Exception(err)
+        e2.push_to_table(f'Error: {err} at {datetime.datetime.now()}',slack=True, hw_monitor=True, email=True)

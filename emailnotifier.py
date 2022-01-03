@@ -33,9 +33,9 @@ class EmailNotifier():
         message = msg
 
         try:
-            self.server.login(self.serveruid, self.server_app_password)
+            response_login = self.server.login(self.serveruid, self.server_app_password)
 
-            self.server.sendmail(
+            response = self.server.sendmail(
                 os.environ.get('sender_email'),
                 os.environ.get('recipient_email'),
                 message
@@ -43,12 +43,10 @@ class EmailNotifier():
 
             self.server.quit()
 
-            # print({'email': True})
-            # return {'email': True}
+            print(response)
+            return response
         except Exception as e:
             print({'Error': f'{e}; Could not send email.'})
 
             self.server.quit()
-
-            # print({'email': False, 'error': str(e)})
-            # return {'email': False, 'error': str(e)}
+            return {'error': str(e)}

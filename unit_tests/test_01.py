@@ -84,6 +84,7 @@ class SlackTest(unittest.TestCase):
         
         slack_01 = SlackNotifier()
         passed_slack:str = slack_01.notification(msg)
+        print(passed_slack)
 
         self.assertTrue(passed_slack == 'ok')
 
@@ -97,8 +98,8 @@ class EmailTest(unittest.TestCase):
         
         email_01 = EmailNotifier()
         passed_email = email_01.mail_notifier(msg)
-
-        self.assertTrue(passed_email == {'email': True})
+        print(passed_email)
+        self.assertTrue(passed_email == {})
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import platform as pl
 
 # Just declaring a variable to the path to the env variable file to make my life a bit easier:
-REPORT_PATH = '../reports/environment.properties'
+REPORT_PATH = 'AllureReports/environment.properties'
 
 
 # Method to retrieve platform details:
