@@ -1,9 +1,7 @@
-import os
-import sys
 import platform as pl
 
 # Just declaring a variable to the path to the env variable file to make my life a bit easier:
-REPORT_PATH = 'reports/environment.properties'
+REPORT_PATH = '../reports/environment.properties'
 
 
 # Method to retrieve platform details:
@@ -25,13 +23,13 @@ def config_writer(report_path:str = REPORT_PATH):
     architecture, processor, system_details, machine, machine_name, platform, version = config_retrieve()
 
     # Constructing 'data' variable as a string to be written to the file:
-    data = f'Architecture={architecture}\n'
-    +f'Processor={processor}\n'
-    +f'SystemDetails={system_details}\n'
-    +f'Machine={machine}\n'
-    +f'MachineName={machine_name}\n'
-    +f'Platform={platform}\n'
-    +f'PythonVersion={version[0]}.{version[1]}.{version[2]}'
+    data = f'Architecture={architecture}\n'+\
+    f'Processor={processor}\n'+\
+    f'SystemDetails={system_details}\n'+\
+    f'Machine={machine}\n'+\
+    f'MachineName={machine_name}\n'+\
+    f'Platform={platform}\n'+\
+    f'PythonVersion={version[0]}.{version[1]}.{version[2]}'
 
     # Over-writing data in file with new contents:
     with open(report_path, 'wt') as config_file:

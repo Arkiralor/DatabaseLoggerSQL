@@ -3,8 +3,12 @@ import sys
 import pytest
 import allure
 
-sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
-from notifier import EventLogger, SlackNotifier, EmailNotifier, Monitor
+# sys.path.append('/home/prithoo/Coding/DatabaseLoggerSQL')
+# from ..notifier import EventLogger, SlackNotifier, EmailNotifier, Monitor
+from ..logger import EventLogger
+# from ..emailnotifier import EmailNotifier
+# from ..slacknotifier import SlackNotifier
+# from ..hw_monitor import Monitor
 
 
 class DatabaseTest(unittest.TestCase):

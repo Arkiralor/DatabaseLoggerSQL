@@ -41,8 +41,8 @@ class Monitor():
         }
 
         with open('config/config.json', 'wt')as conf_file:
-            conf_file.write(json.dumps(log_dict))
-            conf_file.write("\n")
+            conf_file.write(json.dumps(log_dict, indent=4))
+            # conf_file.write("\n")
 
     def monitor(self, msg:str = 'Default hw_logger error', process_id: int = os.getpid(), date: dt.datetime = dt.datetime.now()):
         '''
